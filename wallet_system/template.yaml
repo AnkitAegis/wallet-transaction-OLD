@@ -43,7 +43,7 @@ Resources:
   getByIdFunction:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: src/handlers/get-by-id.getByIdHandler
+      Handler: src/handlers/get-by-id.transferValue
       Runtime: nodejs16.x
       Architectures:
         - x86_64
@@ -77,6 +77,74 @@ Resources:
           Type: Api
           Properties:
             Path: /
+            Method: POST
+  putUserHandler:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: src/handlers/put-user.putUserHandler
+      Runtime: nodejs16.x
+      Architectures:
+        - x86_64
+      MemorySize: 128
+      Timeout: 100
+      Description: A simple example includes a HTTP post method to post new user to a user table.
+    
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /create
+            Method: POST
+  putMasterHandler:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: src/handlers/put-master.putMasterHandler
+      Runtime: nodejs16.x
+      Architectures:
+        - x86_64
+      MemorySize: 128
+      Timeout: 100
+      Description: A simple example includes a HTTP post method to post new user to a user table.
+    
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /master
+            Method: POST
+  balanceSharingHandler:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: src/handlers/balance-sharing.balanceSharingHandler
+      Runtime: nodejs16.x
+      Architectures:
+        - x86_64
+      MemorySize: 128
+      Timeout: 100
+      Description: A simple example includes a HTTP post method to post new record to ledger.
+    
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /balance-sharing
+            Method: POST
+  balanceTransferHandler:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: src/handlers/balance-transfer-topup.balanceTransferHandler
+      Runtime: nodejs16.x
+      Architectures:
+        - x86_64
+      MemorySize: 128
+      Timeout: 100
+      Description: A simple example includes a HTTP post method to post new record to ledger.
+    
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /balance-transfer-topup
             Method: POST
 
 Outputs:
