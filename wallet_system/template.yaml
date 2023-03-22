@@ -19,16 +19,16 @@ Resources:
   # https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
 
   # This is a Lambda function config associated with the source code: get-all-items.js
-  getAllItemsFunction:
+  getAllAccountFunction:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: src/handlers/get-all-items.getAllItemsHandler
+      Handler: src/common/get-all-accounts.getAllAccounts
       Runtime: nodejs16.x
       Architectures:
         - x86_64
       MemorySize: 128
       Timeout: 100
-      Description: A simple example includes a HTTP get method to get all items from a DynamoDB table.
+      Description: A simple example includes a HTTP get method to get all accoutn from a mysql user and master table.
     
       Events:
         Api:
@@ -61,6 +61,42 @@ Resources:
   # https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
 
   # This is a Lambda function config associated with the source code: put-item.js
+  getTransactionHistoryFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: src/common/get-transaction-history.getTransactionHistory
+      Runtime: nodejs16.x
+      Architectures:
+        - x86_64
+      MemorySize: 128
+      Timeout: 100
+      Description: A simple example includes a HTTP get method to get one item by id from a DynamoDB table.
+
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /ledger
+            Method: GET
+            
+  getAccount:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: src/common/get-account.getAccount
+      Runtime: nodejs16.x
+      Architectures:
+        - x86_64
+      MemorySize: 128
+      Timeout: 100
+      Description: A simple example includes a HTTP get method to get one item by id from a DynamoDB table.
+
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /account
+            Method: GET    
+
   putItemFunction:
     Type: AWS::Serverless::Function
     Properties:
@@ -81,7 +117,7 @@ Resources:
   putUserHandler:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: src/handlers/put-user.putUserHandler
+      Handler: src/user/put-user.putUserHandler
       Runtime: nodejs16.x
       Architectures:
         - x86_64
@@ -98,7 +134,7 @@ Resources:
   putMasterHandler:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: src/handlers/put-master.putMasterHandler
+      Handler: src/master/put-master.putMasterHandler
       Runtime: nodejs16.x
       Architectures:
         - x86_64
@@ -115,7 +151,7 @@ Resources:
   balanceSharingHandler:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: src/handlers/balance-sharing.balanceSharingHandler
+      Handler: src/ledger/balance-sharing.balanceSharingHandler
       Runtime: nodejs16.x
       Architectures:
         - x86_64
@@ -132,7 +168,7 @@ Resources:
   balanceTransferHandler:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: src/handlers/balance-transfer-topup.balanceTransferHandler
+      Handler: src/ledger/balance-transfer-topup.balanceTransferHandler
       Runtime: nodejs16.x
       Architectures:
         - x86_64
@@ -146,6 +182,24 @@ Resources:
           Properties:
             Path: /balance-transfer-topup
             Method: POST
+  getMastersUsers:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: src/master/get-user-by-master.getUsersByMaster
+      Runtime: nodejs16.x
+      Architectures:
+        - x86_64
+      MemorySize: 128
+      Timeout: 100
+      Description: A simple example includes a HTTP get method to get one item by id from a DynamoDB table.
+
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /user-by-master?role={role}
+            Method: GET
+
 
 Outputs:
   WebEndpoint:
